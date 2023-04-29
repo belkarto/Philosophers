@@ -13,7 +13,7 @@ NAME		= philo
 AUTHOR		= BELKARTO
 SRC_DIR		= src/
 OBJ_DIR		= obj/
-SRC_FILES	= main
+SRC_FILES	= main args_checker
 CFLAGS		= -Wall -Wextra -Werror -g 
 #-fsanitize=address
 CC			= cc 
@@ -39,7 +39,7 @@ $(OBJ_DIR)%.o	: $(SRC_DIR)%.c | $(OBJF)
 
 # #=== rule that compile the final program ===
 $(NAME) : $(OBJ)
-	@$(CC) $(CFLAGS) $(OBJ) $(LIBFT) -o $(NAME)
+	@$(CC) $(CFLAGS) $(OBJ) $(LIBFT) -pthread -o $(NAME)
 	@printf "$(GREEN)\n- PHILO is ready ✅🥳\n$(NO_COLOR)"
 # #===========================================
 
