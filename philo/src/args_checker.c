@@ -6,7 +6,7 @@
 /*   By: belkarto <marvin@42.fr>                    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/04/29 16:24:10 by belkarto          #+#    #+#             */
-/*   Updated: 2023/04/29 17:05:25 by belkarto         ###   ########.fr       */
+/*   Updated: 2023/05/01 16:12:56 by belkarto         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -31,10 +31,44 @@ int	checke_args_number(int len)
 	return (0);
 }
 
+int	str_is_num(char *str)
+{
+	int	i;
+
+	i = -1;
+	if (str[0] == 0)
+		return (1);
+	if (str[0] == '+' || str[0] == '-')
+		i++;
+	while (str[++i])
+	{
+		if (str[i] > '9' || str[i] < '0')
+			return (1);
+	}
+	return (0);
+}
+
+int	checke_args_isnum(char **argv)
+{
+	int	i;
+
+	i = 0;
+	while (argv[++i])
+	{
+		if (str_is_num(argv[i]) == 1)
+		{
+			write(2, "numeric argument required\n", 27);
+			return (1);
+		}
+	}
+	return (0);
+}
+
 int	args_checker(int len, char **argv)
 {
 	if (checke_args_number(len) == 1)
 		return (1);
-	(void)argv;
+	else if (checke_args_isnum(argv) == 1)
+		return (1);
 	return (0);
 }
