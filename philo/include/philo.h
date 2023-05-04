@@ -6,7 +6,7 @@
 /*   By: belkarto <marvin@42.fr>                    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/04/29 15:21:51 by belkarto          #+#    #+#             */
-/*   Updated: 2023/05/02 04:39:39 by belkarto         ###   ########.fr       */
+/*   Updated: 2023/05/03 17:46:01 by belkarto         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -18,17 +18,18 @@
 # include <stdlib.h>
 # include <pthread.h>
 #include <sys/time.h>
-# define EATING "\033[0;1;2;32m philosopher is eating🍝\033[0;37m"
-# define SLEEPING "\033[0;1;2;35mphilosopher is sleeping💤\033[0;1;2;37m"
-# define THINKING "\033[0;1;2;34mphilosopher is thinking💭\033[0;1;2;37m"
-# define DIE "\033[0;1;2;32mphilosopher died💀\033[0;1;2;37m"
+# define EATING "philosopher is eating🍝"
+# define SLEEPING "philosopher is sleeping💤"
+# define THINKING "philosopher is thinking💭"
+# define DIE "philosopher died💀"
 
 typedef struct s_philo_data
 {
-	long	t_to_die;
-	long	t_to_eat;
-	long	t_to_sleep;
-	uint64_t	time;
+	long			t_to_die;
+	long			t_to_eat;
+	long			t_to_sleep;
+	pthread_mutex_t	print;
+	uint64_t		time;
 }	t_philo_data;
 
 typedef struct s_philo

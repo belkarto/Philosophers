@@ -6,7 +6,7 @@
 /*   By: belkarto <marvin@42.fr>                    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/05/01 16:28:18 by belkarto          #+#    #+#             */
-/*   Updated: 2023/05/02 04:42:28 by belkarto         ###   ########.fr       */
+/*   Updated: 2023/05/03 18:51:43 by belkarto         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -31,8 +31,10 @@ void	*cycle(void *philos)
 	philo = (t_philo *)philos;
 	while (1)
 	{
-		printf("timestamp %llu\n", time_stamp(philo->data.time));
-		usleep(1000);
+		pthread_mutex_lock(&philo->data.print);
+		printf("timestamp %llu rank %d\n", time_stamp(philo->data.time), philo->rank);
+		pthread_mutex_unlock(&philo->data.print);
+		usleep(philo->data.t_to_eat);
 	}
 }
 
@@ -45,13 +47,27 @@ int	tread_creat(t_philo *philos, long len)
 		return (1);
 	i = -1;
 	tmp = philos;
+	pthread_mutex_init(&philos->data.print, NULL);
 	while (++i < len)
 	{
-		pthread_mutex_init(&tmp->fork, NULL);
-		pthread_create(&tmp->philo, NULL, cycle, tmp);
+		if (tmp->rank % 2 == 0)
+		{
+			pthread_mutex_init(&tmp->fork, NULL);
+			pthread_create(&tmp->philo, NULL, cycle, tmp);
+		}
 		tmp = tmp->right;
 	}
-	sleep(10);
+	usleep(200);
+	i = -1;
+	while (++i < len)
+	{
+		if (tmp->rank % 2 != 0)
+		{
+			pthread_mutex_init(&tmp->fork, NULL);
+			pthread_create(&tmp->philo, NULL, cycle, tmp);
+		}
+		tmp = tmp->right;
+	}
 	printf("%d \n", philos->rank);
 	return (0);
 }
