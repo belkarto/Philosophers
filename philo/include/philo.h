@@ -6,7 +6,7 @@
 /*   By: belkarto <marvin@42.fr>                    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/04/29 15:21:51 by belkarto          #+#    #+#             */
-/*   Updated: 2023/05/03 17:46:01 by belkarto         ###   ########.fr       */
+/*   Updated: 2023/05/04 10:54:30 by belkarto         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -18,6 +18,7 @@
 # include <stdlib.h>
 # include <pthread.h>
 #include <sys/time.h>
+# define TAKE_FORK "has taken a fork🍽️"
 # define EATING "philosopher is eating🍝"
 # define SLEEPING "philosopher is sleeping💤"
 # define THINKING "philosopher is thinking💭"
@@ -30,6 +31,7 @@ typedef struct s_philo_data
 	long			t_to_sleep;
 	pthread_mutex_t	print;
 	uint64_t		time;
+	uint64_t		last_meal;
 }	t_philo_data;
 
 typedef struct s_philo
