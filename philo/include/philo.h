@@ -6,7 +6,7 @@
 /*   By: belkarto <marvin@42.fr>                    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/04/29 15:21:51 by belkarto          #+#    #+#             */
-/*   Updated: 2023/05/04 10:54:30 by belkarto         ###   ########.fr       */
+/*   Updated: 2023/05/05 18:11:06 by brahim           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -17,12 +17,13 @@
 # include <unistd.h>
 # include <stdlib.h>
 # include <pthread.h>
-#include <sys/time.h>
+# include <sys/time.h>
 # define TAKE_FORK "has taken a fork🍽️"
 # define EATING "philosopher is eating🍝"
 # define SLEEPING "philosopher is sleeping💤"
 # define THINKING "philosopher is thinking💭"
 # define DIE "philosopher died💀"
+# define uint64_t unsigned long long
 
 typedef struct s_philo_data
 {
@@ -45,12 +46,16 @@ typedef struct s_philo
 	struct s_philo	*left;
 }	t_philo;
 
-int		args_checker(int len, char **argv);
-long	ft_atol(const char *str);
-t_philo	*init_philos(char **argv, int len);
-t_philo	*creat_philos(long philo_n, t_philo_data data, long cycle);
-t_philo	*new_philo(t_philo_data data, int rank, long cycle);
-void	philo_add_back(t_philo **head, t_philo *new_philo);
-int		tread_creat(t_philo *philos, long len);
+int			args_checker(int len, char **argv);
+long		ft_atol(const char *str);
+t_philo		*init_philos(char **argv, int len);
+t_philo		*creat_philos(long philo_n, t_philo_data data, long cycle);
+t_philo		*new_philo(t_philo_data data, int rank, long cycle);
+void		philo_add_back(t_philo **head, t_philo *new_philo);
+int			tread_creat(t_philo *philos, long len);
+uint64_t	time_stamp(uint64_t init_time);
+uint64_t	now_time(void);
+void		philos_spectator(t_philo *philo);
+void		ft_print(char *action, int philo_rank, t_philo *philo);
 
 #endif
