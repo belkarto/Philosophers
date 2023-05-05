@@ -6,7 +6,7 @@
 /*   By: belkarto <marvin@42.fr>                    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/05/01 16:28:18 by belkarto          #+#    #+#             */
-/*   Updated: 2023/05/05 17:57:50 by brahim           ###   ########.fr       */
+/*   Updated: 2023/05/05 19:21:55 by belkarto         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -14,6 +14,10 @@
 #include <pthread.h>
 #include <stdio.h>
 #include <unistd.h>
+
+void ft_sleep(long milliseconds) {
+    usleep(milliseconds * 1000);
+}
 
 void	ft_print(char *action, int philo_rank, t_philo *philo)
 {
@@ -30,7 +34,7 @@ void	ft_eat(t_philo *philo)
 	pthread_mutex_lock(&philo->right->fork);
 	ft_print(TAKE_FORK, philo->rank, philo);
 	ft_print(EATING, philo->rank, philo);
-	usleep(philo->data.t_to_eat);
+	ft_sleep(philo->data.t_to_eat);
 	pthread_mutex_unlock(&philo->right->fork);
 	pthread_mutex_unlock(&philo->fork);
 	philo->data.last_meal = now_time();
@@ -44,15 +48,15 @@ void	*cycle(void *philos)
 	if (philo->rank % 2 == 0)
 	{
 		philo->data.last_meal = now_time();
-		usleep(philo->data.t_to_eat);
+		ft_sleep(philo->data.t_to_eat);
 	}
 	while (1)
 	{
 		ft_eat(philo);
 		ft_print(SLEEPING, philo->rank, philo);
-		usleep(philo->data.t_to_sleep);
+		ft_sleep(philo->data.t_to_sleep);
 		ft_print(THINKING, philo->rank, philo);
-		usleep(philo->data.t_to_eat);
+		ft_sleep(philo->data.t_to_eat);
 	}
 }
 
