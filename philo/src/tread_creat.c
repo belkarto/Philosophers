@@ -6,7 +6,7 @@
 /*   By: belkarto <marvin@42.fr>                    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/05/01 16:28:18 by belkarto          #+#    #+#             */
-/*   Updated: 2023/05/05 19:21:55 by belkarto         ###   ########.fr       */
+/*   Updated: 2023/05/06 15:36:59 by brahim           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -15,7 +15,8 @@
 #include <stdio.h>
 #include <unistd.h>
 
-void ft_sleep(long milliseconds) {
+void ft_sleep(long milliseconds)
+{
     usleep(milliseconds * 1000);
 }
 
@@ -74,9 +75,7 @@ int	tread_creat(t_philo *philos, long len)
 	{
 			pthread_mutex_init(&tmp->fork, NULL);
 			pthread_create(&tmp->philo, NULL, cycle, tmp);
-			pthread_detach(tmp->philo);
 		tmp = tmp->right;
 	}
-	printf("%d \n", philos->rank);
 	return (0);
 }
