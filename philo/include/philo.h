@@ -6,7 +6,7 @@
 /*   By: belkarto <marvin@42.fr>                    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/04/29 15:21:51 by belkarto          #+#    #+#             */
-/*   Updated: 2023/05/05 18:11:06 by brahim           ###   ########.fr       */
+/*   Updated: 2023/05/06 17:18:47 by belkarto         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -23,7 +23,6 @@
 # define SLEEPING "philosopher is sleeping💤"
 # define THINKING "philosopher is thinking💭"
 # define DIE "philosopher died💀"
-# define uint64_t unsigned long long
 
 typedef struct s_philo_data
 {

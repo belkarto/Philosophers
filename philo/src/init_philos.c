@@ -6,7 +6,7 @@
 /*   By: belkarto <marvin@42.fr>                    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/05/01 13:17:59 by belkarto          #+#    #+#             */
-/*   Updated: 2023/05/02 04:41:59 by belkarto         ###   ########.fr       */
+/*   Updated: 2023/05/06 19:13:13 by belkarto         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -35,6 +35,7 @@ int	init_data(char *t_to_die, char *t_to_eat, char *t_to_sleep, \
 		t_philo_data *data)
 {
 	struct timeval	now_time;
+
 	data->t_to_die = ft_atol(t_to_die);
 	data->t_to_eat = ft_atol(t_to_eat);
 	data->t_to_sleep = ft_atol(t_to_sleep);
