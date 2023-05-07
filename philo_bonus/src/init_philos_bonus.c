@@ -6,7 +6,7 @@
 /*   By: belkarto <marvin@42.fr>                    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/05/06 23:45:21 by belkarto          #+#    #+#             */
-/*   Updated: 2023/05/07 22:24:36 by belkarto         ###   ########.fr       */
+/*   Updated: 2023/05/07 23:45:09 by belkarto         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -68,6 +68,8 @@ pid_t	*creat_philos(long philo_n, t_philo_data data, long cycle)
 	pid_arr = malloc(philo_n * sizeof(pid_t));
 	if (!pid_arr)
 		return (NULL);
+	data.sem_print = sem_open("print", O_CREAT, 0666, 1);
+	data.forks = sem_open("forks", O_CREAT, 0666, philo_n);
 	philo.data = data;
 	philo.cycle = cycle;
 	philo.last_meal = now_time();
@@ -75,7 +77,6 @@ pid_t	*creat_philos(long philo_n, t_philo_data data, long cycle)
 	{
 		philo.rank = i + 1;
 		pid_arr[i] = fork();
-		usleep(300);
 		if (pid_arr[i] == -1)
 		{
 			ft_clean(pid_arr, i);
@@ -115,8 +116,6 @@ pid_t	*init_philos(char **argv, int argc, long *philo_n)
 	}
 	init_data(argv[2], argv[3], argv[4], &data);
 	data.len = *philo_n;
-	data.sem_print = sem_open("print", O_CREAT, 0666, 1);
-	data.forks = sem_open("forks", O_CREAT, 0666, philo_n);
 	if (argc == 5)
 		philos = creat_philos(*philo_n, data, -1);
 	else

@@ -6,7 +6,7 @@
 /*   By: belkarto <marvin@42.fr>                    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/05/06 23:45:36 by belkarto          #+#    #+#             */
-/*   Updated: 2023/05/07 07:02:02 by belkarto         ###   ########.fr       */
+/*   Updated: 2023/05/07 23:29:09 by belkarto         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -51,13 +51,13 @@ void	ft_print(char *action, int philo_rank, t_philo philo)
 	sem_post(philo.data.sem_print);
 }
 
-void	ft_clean(t_philo *philo, int len)
+void	ft_clean(pid_t *philo, int len)
 {
 	int	i;
 
 	i = -1;
 	while (++i < len)
-		kill(philo[i].philo, SIGTERM);
+		kill(philo[i], SIGTERM);
 	free(philo);
 	write(2, "Error fork: faild to creat processe\n", 36);
 	exit (1);
