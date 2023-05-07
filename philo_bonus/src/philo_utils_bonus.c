@@ -49,7 +49,6 @@ void	ft_print(char *action, int philo_rank, t_philo philo)
 	sem_wait(philo.data.sem_print);
 	printf("%lld ms\t%d %s\n", time_stamp(philo.data.time), philo_rank, action);
 	sem_post(philo.data.sem_print);
-	printf("print posted heeeeer\n");
 }
 
 void	ft_clean(t_philo *philo, int len)

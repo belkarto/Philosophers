@@ -15,7 +15,8 @@ SRC_DIR		= src/
 OBJ_DIR		= obj/
 SRC_FILES	= main_bonus philo_utils_bonus args_checker_bonus \
 			  init_philos_bonus time_utils_bonus
-CFLAGS		= -Wall -Wextra -Werror -g -fsanitize=address
+CFLAGS		= -Wall -Wextra -Werror 
+#-g -fsanitize=address
 CC			= cc 
 OBJF		=	.cache_exists
 # #================

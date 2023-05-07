@@ -6,7 +6,7 @@
 /*   By: belkarto <marvin@42.fr>                    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/04/29 15:21:51 by belkarto          #+#    #+#             */
-/*   Updated: 2023/05/07 06:27:03 by belkarto         ###   ########.fr       */
+/*   Updated: 2023/05/07 22:15:28 by belkarto         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -34,7 +34,6 @@ typedef struct s_philo_data
 	sem_t			*sem_print;
 	sem_t			*forks;
 	uint64_t		time;
-	uint64_t		last_meal;
 	long			len;
 }	t_philo_data;
 
@@ -44,12 +43,13 @@ typedef struct s_philo
 	pid_t			philo;
 	long			cycle;
 	t_philo_data	data;
+	uint64_t		last_meal;
 }	t_philo;
 
 int			args_checker(int len, char **argv);
 long		ft_atol(const char *str);
-t_philo		*init_philos(char **argv, int len);
-t_philo		*creat_philos(long philo_n, t_philo_data data, long cycle);
+pid_t		*init_philos(char **argv, int argc, long *len);
+pid_t		*creat_philos(long philo_n, t_philo_data data, long cycle);
 t_philo		*new_philo(t_philo_data data, int rank, long cycle);
 void		philo_add_back(t_philo **head, t_philo *new_philo);
 int			tread_creat(t_philo *philos, long len);
@@ -58,6 +58,6 @@ uint64_t	now_time(void);
 void		philos_spectator(t_philo *philo);
 void		ft_print(char *action, int philo_rank, t_philo philo);
 void		ft_sleep(long milliseconds);
-void	ft_clean(t_philo *philo, int len);
+void		ft_clean(pid_t *philo, int len);
 
 #endif
