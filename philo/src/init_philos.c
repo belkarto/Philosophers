@@ -6,12 +6,13 @@
 /*   By: belkarto <marvin@42.fr>                    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/05/01 13:17:59 by belkarto          #+#    #+#             */
-/*   Updated: 2023/05/06 19:13:13 by belkarto         ###   ########.fr       */
+/*   Updated: 2023/05/08 11:16:29 by belkarto         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include "../include/philo.h"
 #include <sys/time.h>
+#include <unistd.h>
 
 t_philo	*creat_philos(long philo_n, t_philo_data data, long cycle)
 {
@@ -34,8 +35,6 @@ t_philo	*creat_philos(long philo_n, t_philo_data data, long cycle)
 int	init_data(char *t_to_die, char *t_to_eat, char *t_to_sleep, \
 		t_philo_data *data)
 {
-	struct timeval	now_time;
-
 	data->t_to_die = ft_atol(t_to_die);
 	data->t_to_eat = ft_atol(t_to_eat);
 	data->t_to_sleep = ft_atol(t_to_sleep);
@@ -44,8 +43,19 @@ int	init_data(char *t_to_die, char *t_to_eat, char *t_to_sleep, \
 		write(2, "time must be number bigger than 0\n", 35);
 		return (1);
 	}
-	gettimeofday(&now_time, NULL);
-	data->time = now_time.tv_sec * 1000 + now_time.tv_usec / 1000;
+	data->time = now_time();
+	return (0);
+}
+
+int	init_cycle(long *cycle, long valeu)
+{
+	if (valeu < 0)
+	{
+		write(2, "how many time a philo should eat must be positive number",
+			56);
+		return (1);
+	}
+	*cycle = valeu;
 	return (0);
 }
 
@@ -54,6 +64,7 @@ t_philo	*init_philos(char **argv, int argc)
 	long			philo_n;
 	t_philo			*philos;
 	t_philo_data	data;
+	long			cycle;
 
 	philo_n = ft_atol(argv[1]);
 	if (philo_n < 1)
@@ -67,6 +78,10 @@ t_philo	*init_philos(char **argv, int argc)
 	if (argc == 5)
 		philos = creat_philos(philo_n, data, -1);
 	else
-		philos = creat_philos(philo_n, data, ft_atol(argv[5]));
+	{
+		if (init_cycle(&cycle, ft_atol(argv[5])) == 1)
+			return (NULL);
+		philos = creat_philos(philo_n, data, cycle);
+	}
 	return (philos);
 }

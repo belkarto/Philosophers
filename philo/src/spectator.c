@@ -6,7 +6,7 @@
 /*   By: brahim <marvin@42.fr>                      +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/05/05 17:58:54 by brahim            #+#    #+#             */
-/*   Updated: 2023/05/06 17:19:58 by belkarto         ###   ########.fr       */
+/*   Updated: 2023/05/08 11:06:44 by belkarto         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -30,10 +30,10 @@ int	is_dead(t_philo *philo)
 
 void	philos_spectator(t_philo *philo)
 {
+	usleep(TIME_TO_CREAT_THREAD);
 	while (1)
 	{
 		pthread_mutex_lock(&philo->data.print);
-		usleep(300);
 		if (is_dead(philo) == 1)
 			return ;
 		pthread_mutex_unlock(&philo->data.print);

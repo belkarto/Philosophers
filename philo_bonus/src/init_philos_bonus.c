@@ -6,34 +6,11 @@
 /*   By: belkarto <marvin@42.fr>                    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/05/06 23:45:21 by belkarto          #+#    #+#             */
-/*   Updated: 2023/05/08 03:29:05 by belkarto         ###   ########.fr       */
+/*   Updated: 2023/05/08 06:16:52 by belkarto         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include "../include/philo_bonus.h"
-#include <stdio.h>
-#include <stdlib.h>
-#include <sys/fcntl.h>
-#include <sys/semaphore.h>
-#include <sys/time.h>
-
-void	*ft_spectator(void *param)
-{
-	t_philo	*philo;
-
-	philo = (t_philo *)param;
-	while (1)
-	{
-		if (now_time() - philo->last_meal > (uint64_t)philo->data.t_to_die)
-		{
-			sem_wait(philo->data.sem_print);
-			printf("%lld ms\t%d %s\n", time_stamp(philo->data.time), philo->rank, DIE);
-			exit (2);
-		}
-		ft_sleep(1);
-	}
-	return (NULL);
-}
 
 void	ft_cycle(t_philo philo)
 {
@@ -66,7 +43,7 @@ pid_t	*creat_philos(long philo_n, t_philo_data data, long cycle)
 {
 	pid_t	*pid_arr;
 	t_philo	philo;
-	int	i;
+	int		i;
 
 	i = -1;
 	pid_arr = malloc(philo_n * sizeof(pid_t));
@@ -82,14 +59,23 @@ pid_t	*creat_philos(long philo_n, t_philo_data data, long cycle)
 		philo.rank = i + 1;
 		pid_arr[i] = fork();
 		if (pid_arr[i] == -1)
-		{
 			ft_clean(pid_arr, i);
-			return (NULL);
-		}
 		else if (pid_arr[i] == 0)
 			ft_cycle(philo);
 	}
 	return (pid_arr);
+}
+
+int	init_cycle(long *cycle, long valeu)
+{
+	if (valeu < 0)
+	{
+		write(2, "how many time a philo should eat must be positive number",
+			56);
+		return (1);
+	}
+	*cycle = valeu;
+	return (0);
 }
 
 void	init_data(char *t_to_die, char *t_to_eat, char *t_to_sleep, \
@@ -110,12 +96,13 @@ pid_t	*init_philos(char **argv, int argc, long *philo_n)
 {
 	pid_t			*philos;
 	t_philo_data	data;
+	long			cycle;
 
 	*philo_n = ft_atol(argv[1]);
 	if (*philo_n < 1)
 	{
 		write(2, "philosopers number must be positive number bigger than 0\n", \
-				58);
+			58);
 		exit (1);
 	}
 	init_data(argv[2], argv[3], argv[4], &data);
@@ -123,6 +110,10 @@ pid_t	*init_philos(char **argv, int argc, long *philo_n)
 	if (argc == 5)
 		philos = creat_philos(*philo_n, data, -1);
 	else
-		philos = creat_philos(*philo_n, data, ft_atol(argv[5]));
+	{
+		if (init_cycle(&cycle, ft_atol(argv[5])) == 1)
+			return (NULL);
+		philos = creat_philos(*philo_n, data, cycle);
+	}
 	return (philos);
 }

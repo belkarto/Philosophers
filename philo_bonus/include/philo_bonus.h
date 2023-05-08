@@ -6,12 +6,12 @@
 /*   By: belkarto <marvin@42.fr>                    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/04/29 15:21:51 by belkarto          #+#    #+#             */
-/*   Updated: 2023/05/07 22:15:28 by belkarto         ###   ########.fr       */
+/*   Updated: 2023/05/08 06:17:19 by belkarto         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
-#ifndef PHILO_H
-# define PHILO_H
+#ifndef PHILO_BONUS_H
+# define PHILO_BONUS_H
 
 # include <stdio.h>
 # include <unistd.h>
@@ -59,5 +59,6 @@ void		philos_spectator(t_philo *philo);
 void		ft_print(char *action, int philo_rank, t_philo philo);
 void		ft_sleep(long milliseconds);
 void		ft_clean(pid_t *philo, int len);
+void		*ft_spectator(void *param);
 
 #endif
