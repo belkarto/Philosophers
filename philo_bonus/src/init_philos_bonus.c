@@ -6,7 +6,7 @@
 /*   By: belkarto <marvin@42.fr>                    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/05/06 23:45:21 by belkarto          #+#    #+#             */
-/*   Updated: 2023/05/07 23:45:09 by belkarto         ###   ########.fr       */
+/*   Updated: 2023/05/08 03:29:05 by belkarto         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -42,6 +42,8 @@ void	ft_cycle(t_philo philo)
 	pthread_create(&spectator, NULL, ft_spectator, &philo);
 	while (1)
 	{
+		if (philo.cycle == 0)
+			exit(2);
 		sem_wait(philo.data.forks);
 		ft_print(TAKE_FORK, philo.rank, philo);
 		sem_wait(philo.data.forks);
@@ -54,6 +56,8 @@ void	ft_cycle(t_philo philo)
 		ft_print(SLEEPING, philo.rank, philo);
 		ft_sleep(philo.data.t_to_sleep);
 		ft_print(THINKING, philo.rank, philo);
+		if (philo.cycle > 0)
+			philo.cycle--;
 	}
 	exit(0);
 }
