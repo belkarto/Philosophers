@@ -6,7 +6,7 @@
 /*   By: brahim <marvin@42.fr>                      +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/05/05 17:58:54 by brahim            #+#    #+#             */
-/*   Updated: 2023/05/08 11:06:44 by belkarto         ###   ########.fr       */
+/*   Updated: 2023/05/09 03:32:20 by belkarto         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -15,16 +15,23 @@
 
 int	is_dead(t_philo *philo)
 {
-	if (now_time() - philo->data.last_meal > (uint64_t)philo->data.t_to_die
-		&& philo->cycle != 0)
+	pthread_mutex_lock(&philo->cycle_mutex);
+	if (philo->cycle == 0)
 	{
-		usleep(300);
-		printf("%lld ms\t%d %s\n", time_stamp(philo->data.time),
+		pthread_mutex_lock(&philo->last_meal_mutex);
+		return (1);
+	}
+	pthread_mutex_lock(&philo->last_meal_mutex);
+	if (now_time() - philo->data.last_meal > (uint64_t)philo->data.t_to_die)
+	{
+		pthread_mutex_unlock(&philo->last_meal_mutex);
+		pthread_mutex_unlock(&philo->cycle_mutex);
+		printf("%lld ms\t%d %s\n", time_stamp(philo->data.time) - 1,
 			philo->rank, DIE);
 		return (1);
 	}
-	else if (philo->cycle == 0)
-		return (1);
+	pthread_mutex_unlock(&philo->last_meal_mutex);
+	pthread_mutex_unlock(&philo->cycle_mutex);
 	return (0);
 }
 
@@ -34,6 +41,7 @@ void	philos_spectator(t_philo *philo)
 	while (1)
 	{
 		pthread_mutex_lock(&philo->data.print);
+		usleep(300);
 		if (is_dead(philo) == 1)
 			return ;
 		pthread_mutex_unlock(&philo->data.print);

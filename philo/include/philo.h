@@ -6,7 +6,7 @@
 /*   By: belkarto <marvin@42.fr>                    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/04/29 15:21:51 by belkarto          #+#    #+#             */
-/*   Updated: 2023/05/08 11:06:34 by belkarto         ###   ########.fr       */
+/*   Updated: 2023/05/09 03:16:54 by belkarto         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -39,6 +39,8 @@ typedef struct s_philo
 {
 	int				rank;
 	long			cycle;
+	pthread_mutex_t	cycle_mutex;
+	pthread_mutex_t	last_meal_mutex;
 	t_philo_data	data;
 	pthread_t		philo;
 	pthread_mutex_t	fork;
