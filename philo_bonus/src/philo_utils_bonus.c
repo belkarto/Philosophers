@@ -6,7 +6,7 @@
 /*   By: belkarto <marvin@42.fr>                    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/05/06 23:45:36 by belkarto          #+#    #+#             */
-/*   Updated: 2023/05/08 03:48:28 by belkarto         ###   ########.fr       */
+/*   Updated: 2023/05/10 11:50:34 by belkarto         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -37,11 +37,6 @@ long	ft_atol(const char *str)
 		i++;
 	}
 	return (res * sign);
-}
-
-void	ft_sleep(long milliseconds)
-{
-	usleep(milliseconds * 1000);
 }
 
 void	ft_print(char *action, int philo_rank, t_philo philo)

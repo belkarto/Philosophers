@@ -6,11 +6,25 @@
 /*   By: belkarto <marvin@42.fr>                    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/05/01 16:28:18 by belkarto          #+#    #+#             */
-/*   Updated: 2023/05/09 03:36:48 by belkarto         ###   ########.fr       */
+/*   Updated: 2023/05/12 18:45:30 by belkarto         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include "../include/philo.h"
+
+void	ft_to_sleep(uint64_t to_sleep)
+{
+	long	now;
+	long	after;
+
+	now = now_time();
+	after = (now) + (to_sleep);
+	while (now < after)
+	{
+		usleep(100);
+		now = now_time();
+	}
+}
 
 void	ft_print(char *action, int philo_rank, t_philo *philo)
 {
@@ -31,15 +45,15 @@ int	ft_eat(t_philo *philo)
 	pthread_mutex_lock(&philo->last_meal_mutex);
 	philo->data.last_meal = now_time();
 	pthread_mutex_unlock(&philo->last_meal_mutex);
+	ft_to_sleep(philo->data.t_to_eat);
+	pthread_mutex_unlock(&philo->right->fork);
+	pthread_mutex_unlock(&philo->fork);
 	if (philo->cycle != -1)
 	{
 		pthread_mutex_lock(&philo->cycle_mutex);
 		philo->cycle--;
 		pthread_mutex_unlock(&philo->cycle_mutex);
 	}
-	usleep(philo->data.t_to_eat * 1000);
-	pthread_mutex_unlock(&philo->right->fork);
-	pthread_mutex_unlock(&philo->fork);
 	return (0);
 }
 
@@ -52,13 +66,13 @@ void	*cycle(void *philos)
 	philo->data.last_meal = philo->data.time;
 	pthread_mutex_unlock(&philo->last_meal_mutex);
 	if (philo->rank % 2 == 0)
-		usleep(philo->data.t_to_eat * 1000);
+		ft_to_sleep(philo->data.t_to_eat);
 	while (1)
 	{
 		if (ft_eat(philo) == 1)
 			return (NULL);
 		ft_print(SLEEPING, philo->rank, philo);
-		usleep(philo->data.t_to_sleep * 1000);
+		ft_to_sleep(philo->data.t_to_sleep);
 		ft_print(THINKING, philo->rank, philo);
 	}
 }
@@ -84,7 +98,6 @@ int	tread_creat(t_philo *philos, long len)
 	while (++i < len)
 	{
 		pthread_create(&tmp->philo, NULL, cycle, tmp);
-		pthread_detach(tmp->philo);
 		tmp = tmp->right;
 	}
 	return (0);

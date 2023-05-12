@@ -6,7 +6,7 @@
 /*   By: belkarto <marvin@42.fr>                    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/04/29 15:21:51 by belkarto          #+#    #+#             */
-/*   Updated: 2023/05/08 06:17:19 by belkarto         ###   ########.fr       */
+/*   Updated: 2023/05/12 18:46:02 by belkarto         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -39,11 +39,14 @@ typedef struct s_philo_data
 
 typedef struct s_philo
 {
-	int				rank;
-	pid_t			philo;
-	long			cycle;
-	t_philo_data	data;
-	uint64_t		last_meal;
+	pthread_t			spectator;
+	int					rank;
+	pid_t				philo;
+	long				cycle;
+	sem_t				*cycle_lock;
+	t_philo_data		data;
+	sem_t				*last_meal_lock;
+	struct timeval		last_meal;
 }	t_philo;
 
 int			args_checker(int len, char **argv);
@@ -57,8 +60,8 @@ uint64_t	time_stamp(uint64_t init_time);
 uint64_t	now_time(void);
 void		philos_spectator(t_philo *philo);
 void		ft_print(char *action, int philo_rank, t_philo philo);
-void		ft_sleep(long milliseconds);
 void		ft_clean(pid_t *philo, int len);
 void		*ft_spectator(void *param);
+void		ft_to_sleep(uint64_t to_sleep);
 
 #endif

@@ -6,17 +6,18 @@
 /*   By: belkarto <marvin@42.fr>                    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/05/06 23:45:21 by belkarto          #+#    #+#             */
-/*   Updated: 2023/05/08 06:16:52 by belkarto         ###   ########.fr       */
+/*   Updated: 2023/05/12 18:34:32 by belkarto         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include "../include/philo_bonus.h"
+#include <pthread.h>
 
 void	ft_cycle(t_philo philo)
 {
-	pthread_t	spectator;
-
-	pthread_create(&spectator, NULL, ft_spectator, &philo);
+	philo.last_meal_lock = sem_open("meal", O_CREAT, 0666, 1);
+	philo.cycle_lock = sem_open("cycle", O_CREAT, 0666, 1);
+	pthread_create(&philo.spectator, NULL, ft_spectator, &philo);
 	while (1)
 	{
 		if (philo.cycle == 0)
@@ -26,15 +27,17 @@ void	ft_cycle(t_philo philo)
 		sem_wait(philo.data.forks);
 		ft_print(TAKE_FORK, philo.rank, philo);
 		ft_print(EATING, philo.rank, philo);
-		philo.last_meal = now_time();
-		ft_sleep(philo.data.t_to_eat);
+		sem_wait(philo.last_meal_lock);
+		gettimeofday(&philo.last_meal, NULL);
+		sem_post(philo.last_meal_lock);
+		if (philo.cycle > 0)
+			philo.cycle--;
+		ft_to_sleep(philo.data.t_to_eat);
 		sem_post(philo.data.forks);
 		sem_post(philo.data.forks);
 		ft_print(SLEEPING, philo.rank, philo);
-		ft_sleep(philo.data.t_to_sleep);
+		ft_to_sleep(philo.data.t_to_sleep);
 		ft_print(THINKING, philo.rank, philo);
-		if (philo.cycle > 0)
-			philo.cycle--;
 	}
 	exit(0);
 }
@@ -53,7 +56,7 @@ pid_t	*creat_philos(long philo_n, t_philo_data data, long cycle)
 	data.forks = sem_open("forks", O_CREAT, 0666, philo_n);
 	philo.data = data;
 	philo.cycle = cycle;
-	philo.last_meal = now_time();
+	gettimeofday(&philo.last_meal, NULL);
 	while (++i < philo_n)
 	{
 		philo.rank = i + 1;

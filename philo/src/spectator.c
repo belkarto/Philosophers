@@ -6,7 +6,7 @@
 /*   By: brahim <marvin@42.fr>                      +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/05/05 17:58:54 by brahim            #+#    #+#             */
-/*   Updated: 2023/05/09 03:32:20 by belkarto         ###   ########.fr       */
+/*   Updated: 2023/05/10 23:12:23 by belkarto         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -18,6 +18,7 @@ int	is_dead(t_philo *philo)
 	pthread_mutex_lock(&philo->cycle_mutex);
 	if (philo->cycle == 0)
 	{
+		usleep(philo->data.t_to_sleep * 1000);
 		pthread_mutex_lock(&philo->last_meal_mutex);
 		return (1);
 	}
@@ -26,7 +27,8 @@ int	is_dead(t_philo *philo)
 	{
 		pthread_mutex_unlock(&philo->last_meal_mutex);
 		pthread_mutex_unlock(&philo->cycle_mutex);
-		printf("%lld ms\t%d %s\n", time_stamp(philo->data.time) - 1,
+		usleep(10000);
+		printf("%lld ms\t%d %s\n", time_stamp(philo->data.time),
 			philo->rank, DIE);
 		return (1);
 	}
@@ -41,9 +43,11 @@ void	philos_spectator(t_philo *philo)
 	while (1)
 	{
 		pthread_mutex_lock(&philo->data.print);
-		usleep(300);
 		if (is_dead(philo) == 1)
+		{
+			usleep(10000);
 			return ;
+		}
 		pthread_mutex_unlock(&philo->data.print);
 		philo = philo->right;
 	}

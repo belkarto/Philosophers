@@ -15,8 +15,7 @@ SRC_DIR		= src/
 OBJ_DIR		= obj/
 SRC_FILES	= main args_checker philo_utils init_philos tread_creat time_utils\
 			  spectator
-CFLAGS		= -Wall -Wextra -Werror 
-#-g -fsanitize=thread
+CFLAGS		= -Wall -Wextra -Werror # -g -fsanitize=thread
 CC			= cc 
 OBJF		=	.cache_exists
 # #================
